@@ -33,10 +33,6 @@ exports.createOne = async (req, res, next) => {
       const totalPrice = PKDish.dataValues.dishPrice + PKCourier.dataValues.commission;
       const discount = totalPrice / 10;
 
-      if (PKCustomer.dataValues.activeDiscount) {
-        totalPrice - discount;
-      }
-
       const totalTime = PKDish.dataValues.preparationTime + PKCourier.dataValues.deliveryTime;
 
       const ORDER_MODEL = {
@@ -45,6 +41,10 @@ exports.createOne = async (req, res, next) => {
         dishId: req.body.dishId,
         totalPrice: totalPrice,
         totalTime: totalTime
+      }
+
+      if (PKCustomer.dataValues.activeDiscount) {
+        ORDER_MODEL.totalPrice = totalPrice - discount;
       }
 
       const order = await Order.create(ORDER_MODEL);

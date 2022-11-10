@@ -1,3 +1,4 @@
+const { Dish } = require('../models/dishes');
 const { Restaurant } = require('../models/restaurants');
 
 exports.getAll = async (req, res, next) => {
@@ -11,7 +12,9 @@ exports.getAll = async (req, res, next) => {
 
 exports.getOne = async (req, res, next) => {
   try {
-    const ROW = await Restaurant.findByPk(req.params.id);
+    const ROW = await Restaurant.findByPk(req.params.id, {
+      include: Dish
+    })
     return res.status(200).json(ROW);
   } catch (err) {
     return res.status(500).json(err);
@@ -28,7 +31,7 @@ exports.createOne = async (req, res, next) => {
       const restaurant = await Restaurant.create(RESTAURANT_MODEL);
       console.log("Restaurant created");
       return res.status(200).json(restaurant);
-    } catch (error) {
+    } catch (err) {
       return res.status(500).json(err);
     }
   } catch (err) {

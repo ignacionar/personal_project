@@ -2,7 +2,6 @@ const { Sequelize } = require('sequelize');
 const { sequelize } = require('../db/db.js');
 const { Courier } = require('./couriers.js');
 const { Customer } = require('./customers.js');
-const { Dish } = require('./dishes.js');
 
 const Order = sequelize.define('Orders', {
   id: {
@@ -14,25 +13,14 @@ const Order = sequelize.define('Orders', {
   customerId: {
     type: Sequelize.INTEGER,
     allowNull: false,
-    references: {
-      model: "Customers",
-      key: "id"
-    }
   },
   courierId: {
     type: Sequelize.INTEGER,
     allowNull: false,
-    references: {
-      model: "Couriers",
-      key: "id"
-    }
   },
   dishId: {
     type: Sequelize.INTEGER,
-    references: {
-      model: "Dishes",
-      key: "id"
-    }
+    allowNull: false
   },
   totalTime: {
     type: Sequelize.INTEGER,
@@ -43,6 +31,23 @@ const Order = sequelize.define('Orders', {
     allowNull: false
   }
 });
+
+Courier.hasMany(Order, {
+  foreignKey: 'courierId',
+  onDelete: 'cascade',
+  onUpdate: 'cascade'
+});
+
+Order.belongsTo(Courier, {foreignKey: 'courierId'});
+
+Customer.hasMany(Order, {
+  foreignKey: 'customerId',
+  onDelete: 'cascade',
+  onUpdate: 'cascade'
+});
+
+Order.belongsTo(Customer, {foreignKey: 'customerId'});
+
 
 module.exports = {
   Order

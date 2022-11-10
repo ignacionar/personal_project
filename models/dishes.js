@@ -1,5 +1,6 @@
 const { Sequelize } = require('sequelize');
 const { sequelize } = require('../db/db.js');
+const { Order } = require('./orders.js');
 const { Restaurant } = require('./restaurants.js');
 
 const Dish = sequelize.define('Dishes', {
@@ -18,24 +19,31 @@ const Dish = sequelize.define('Dishes', {
     type: Sequelize.INTEGER,
     allowNull: false
   },
-  restaurantId: {
-    type: Sequelize.INTEGER,
-    references: {
-      model: "Restaurants",
-      key: "id"
-    }
-  },
   preparationTime: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  restaurantId: {
     type: Sequelize.INTEGER,
     allowNull: false
   }
 });
 
-Dish.belongsTo(Restaurant, {
-  foreignKey: 'id',
-  foreignKeyConstraint: true,
-  onDelete: 'cascade'
-})
+Restaurant.hasMany(Dish, {
+  foreignKey: 'restaurantId',
+  onDelete: 'cascade',
+  onUpdate: 'cascade'
+});
+
+Dish.belongsTo(Restaurant, {foreignKey: 'restaurantId'});
+
+Dish.hasMany(Order, {
+  foreignKey: 'dishId',
+  onDelete: 'cascade',
+  onUpdate: 'cascade'
+});
+
+Order.belongsTo(Dish, {foreignKey: 'dishId'});
 
 module.exports = {
   Dish

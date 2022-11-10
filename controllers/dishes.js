@@ -27,8 +27,8 @@ exports.createOne = async (req, res, next) => {
     const DISH_MODEL = {
       name: req.body.name,
       dishPrice: req.body.dishPrice,
-      restaurantId: req.body.restaurantId,
-      preparationTime: req.body.preparationTime
+      preparationTime: req.body.preparationTime,
+      restaurantId: req.body.restaurantId    
     }
     try {
       const dish = await Dish.create(DISH_MODEL);
@@ -47,8 +47,8 @@ exports.updateOne = async (req, res, next) => {
     const DISH_MODEL = {
       name: req.body.name,
       dishPrice: req.body.dishPrice,
-      restaurantId: req.body.restaurantId,
-      preparationTime: req.body.preparationTime
+      preparationTime: req.body.preparationTime,
+      restaurantId: req.body.restaurantId    
     }
     try {
       const dish = await Dish.update(DISH_MODEL, {where: {id: req.params.id}});

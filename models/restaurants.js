@@ -1,5 +1,6 @@
 const { Sequelize } = require('sequelize');
 const { sequelize } = require('../db/db.js');
+const { Dish } = require('./dishes.js');
 
 const Restaurant = sequelize.define('Restaurants', {
   id: {
@@ -16,8 +17,7 @@ const Restaurant = sequelize.define('Restaurants', {
   rating: {
     type: Sequelize.INTEGER,
     allowNull: false
-  }
- 
+  },
 })
 
 module.exports = {
