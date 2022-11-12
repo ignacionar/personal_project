@@ -1,6 +1,5 @@
 const { Sequelize } = require('sequelize');
 const { sequelize } = require('../db/db.js');
-const { Dish } = require('./dishes.js');
 
 const Restaurant = sequelize.define('Restaurants', {
   id: {
