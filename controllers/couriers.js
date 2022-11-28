@@ -12,6 +12,9 @@ exports.getAll = async (req, res, next) => {
 exports.getOne = async (req, res, next) => {
   try {
     const ROW = await Courier.findByPk(req.params.id);
+    if (!ROW) {
+      return res.status(500).send("The courier was not found");
+    }
     return res.status(200).json(ROW);
   } catch (err) {
     return res.status(500).json(err);
@@ -29,7 +32,7 @@ exports.createOne = async (req, res, next) => {
     try {
       const courier = await Courier.create(COURIER_MODEL);
       console.log("Courier created");
-      return res.status(200).json(courier);
+      return res.status(201).json(courier);
     } catch (err) {
       return res.status(500).json(err);
     }
@@ -48,6 +51,9 @@ exports.updateOne = async (req, res, next) => {
     }
     try {
       const courier = await Courier.update(COURIER_MODEL, {where: {id: req.params.id}});
+      if (!courier) {
+        return res.status(500).send("The courier was not found");
+      }
       console.log("Courier updated");
       return res.status(200).json(courier);
     } catch (err) {

@@ -16,7 +16,7 @@ exports.getOne = async (req, res, next) => {
   try {
     const ROW = await Order.findByPk(req.params.id);
     if (!ROW) {
-      return res.send("Order was not found");
+      return res.status(500).send("Order was not found");
     }
     return res.status(200).json(ROW);
   } catch (err) {
@@ -49,7 +49,7 @@ exports.createOne = async (req, res, next) => {
 
       const order = await Order.create(ORDER_MODEL);
       console.log("Order created");
-      return res.status(200).json(order);
+      return res.status(201).json(order);
     } catch (err) {
       return res.status(500).json(err);
     }
@@ -82,6 +82,9 @@ exports.updateOne = async (req, res, next) => {
       }
 
       const order = await Order.update(ORDER_MODEL, {where: {id: req.params.id}});
+      if (!order) {
+        res.status(500).send("Order was not found");
+      }
       console.log("Order created");
       return res.status(200).json(order);
     } catch (err) {

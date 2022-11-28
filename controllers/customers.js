@@ -13,7 +13,7 @@ exports.getOne = async (req, res, next) => {
   try {
     const ROW = await Customer.findByPk(req.params.id);
     if (!ROW) {
-      return res.send("User was not found")
+      return res.status(500).send("User was not found")
     }
     return res.status(200).json(ROW);
   } catch (err) {
@@ -30,7 +30,7 @@ exports.createOne = async (req, res, next) => {
     try {
       const customer = await Customer.create(CUSTOMER_MODEL);
       console.log("Customer created");
-      return res.status(200).json(customer);
+      return res.status(201).json(customer);
     } catch (err) {
       return res.status(500).json(err);
     }
@@ -48,7 +48,7 @@ exports.updateOne = async (req, res, next) => {
     try {
       const customer = await Customer.update(CUSTOMER_MODEL, {where: {id: req.params.id}});
       if (!customer) {
-        return res.send("Customer was not found")
+        return res.status(500).send("Customer was not found")
       }
       console.log("Customer updated");
       return res.status(200).json(customer);

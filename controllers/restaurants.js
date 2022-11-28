@@ -15,6 +15,9 @@ exports.getOne = async (req, res, next) => {
     const ROW = await Restaurant.findByPk(req.params.id, {
       include: Dish
     })
+    if (!ROW) {
+      return res.status(500).send("Restaurant was not found")
+    }
     return res.status(200).json(ROW);
   } catch (err) {
     return res.status(500).json(err);
@@ -30,7 +33,7 @@ exports.createOne = async (req, res, next) => {
     try {
       const restaurant = await Restaurant.create(RESTAURANT_MODEL);
       console.log("Restaurant created");
-      return res.status(200).json(restaurant);
+      return res.status(201).json(restaurant);
     } catch (err) {
       return res.status(500).json(err);
     }
@@ -47,6 +50,9 @@ exports.updateOne = async (req, res, next) => {
     }
     try {
       const restaurant = await Restaurant.update(RESTAURANT_MODEL, {where: {id: req.params.id}});
+      if (!restaurant) {
+        res.status(500).send("Restaurant was not found");
+      }
       console.log("Restaurant updated");
       return res.status(200).json(restaurant);
     } catch (error) {
